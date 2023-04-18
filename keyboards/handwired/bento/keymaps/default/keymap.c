@@ -15,9 +15,9 @@
  */
 #include QMK_KEYBOARD_H
 
-enum encoder_names {
-  _ENCODER
-};
+enum encoder_names { _ENCODER };
+
+enum my_keycodes { MY_KEY_1 = SAFE_RANGE, MY_KEY_2, MY_KEY_3, MY_KEY_4, MY_KEY_5 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -25,18 +25,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         | Hold: Layer 2     | Up   | Press: Mute        |
         | Left              | Down | Right              |
      */
-    [0] = LAYOUT(
-        MO(1), KC_UP, KC_MUTE,
-        KC_LEFT, KC_DOWN, KC_RGHT
-    ),
+    [0] = LAYOUT(MY_KEY_1, MY_KEY_2, KC_MUTE, MY_KEY_3, MY_KEY_4, MY_KEY_5),
     /*
         | Held: Layer 2  | Home | QK_BOOT      |
         | Media Previous | End  | Media Next |
      */
-    [1] = LAYOUT(
-        _______, KC_HOME, QK_BOOT,
-        KC_MPRV, KC_END , KC_MNXT
-    ),
+    // [1] = LAYOUT(_______, KC_HOME, QK_BOOT, KC_MPRV, KC_END, KC_MNXT),
 };
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
@@ -46,6 +40,37 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         } else {
             tap_code(KC_VOLD);
         }
+    }
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MY_KEY_1:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LGUI(SS_LCTL(SS_LSFT(SS_LALT("1")))));
+            }
+            return false; // Skip all further processing of this key
+        case MY_KEY_2:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LGUI(SS_LCTL(SS_LSFT(SS_LALT("2")))));
+            }
+            return false; // Skip all further processing of this key
+        case MY_KEY_3:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LGUI(SS_LCTL(SS_LSFT(SS_LALT("3")))));
+            }
+            return false; // Skip all further processing of this key
+        case MY_KEY_4:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LGUI(SS_LCTL(SS_LSFT(SS_LALT("4")))));
+            }
+            return false; // Skip all further processing of this key
+        case MY_KEY_5:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LGUI(SS_LCTL(SS_LSFT(SS_LALT("5")))));
+            }
+            return false; // Skip all further processing of this key
     }
     return true;
 }
